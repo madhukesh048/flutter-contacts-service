@@ -1,3 +1,4 @@
+import 'package:contacts_app/fullcontactpage.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,18 +37,31 @@ class _HomePageState extends State<HomePage> {
               itemCount: _contacts?.length ?? 0,
               itemBuilder: (BuildContext context, int index) {
                 Contact contact = _contacts?.elementAt(index);
-                return ListTile(
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 2, horizontal: 18),
-                  leading: (contact.avatar != null && contact.avatar.isNotEmpty)
-                      ? CircleAvatar(
-                          backgroundImage: MemoryImage(contact.avatar),
-                        )
-                      : CircleAvatar(
-                          child: Text(contact.initials()),
-                          backgroundColor: Theme.of(context).accentColor,
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FullContactPage(
+                          numbers: _contacts.elementAt(index).phones,
                         ),
-                  title: Text(contact.displayName ?? ''),
+                      ),
+                    );
+                  },
+                  child: ListTile(
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 2, horizontal: 18),
+                    leading:
+                        (contact.avatar != null && contact.avatar.isNotEmpty)
+                            ? CircleAvatar(
+                                backgroundImage: MemoryImage(contact.avatar),
+                              )
+                            : CircleAvatar(
+                                child: Text(contact.initials()),
+                                backgroundColor: Theme.of(context).accentColor,
+                              ),
+                    title: Text(contact.displayName ?? ''),
+                  ),
                 );
               },
             )
